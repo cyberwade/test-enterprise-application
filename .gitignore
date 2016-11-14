@@ -1,0 +1,7 @@
+# Intellij Idea
+*.ipr
+*.iml
+*.iws
+
+# Project
+target/
