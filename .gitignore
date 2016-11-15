@@ -1,7 +1,7 @@
-# Intellij Idea
+# IntelliJ IDEA
 *.ipr
 *.iml
 *.iws
 
 # Project
-target/
+*target/

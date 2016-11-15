@@ -1,0 +1,8 @@
+# LF
+* text=auto
+
+# Text files
+*.java text
+*.xml text
+*.css text
+*.txt text
