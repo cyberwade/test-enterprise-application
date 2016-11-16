@@ -1,7 +1,10 @@
 package ru.testea.api;
 
 import com.google.common.base.MoreObjects;
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
 import org.joda.money.Money;
+import org.joda.time.DateTime;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -26,6 +29,7 @@ import javax.validation.constraints.NotNull;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
     name = "operation_type",
+    columnDefinition = "operation_type",
     discriminatorType = DiscriminatorType.STRING)
 @AttributeOverride(
     name = "id",
@@ -34,12 +38,22 @@ import javax.validation.constraints.NotNull;
         nullable = false))
 @SequenceGenerator(
     schema = Constants.DB_SCHEMA_NAME,
-    name = "operation_id_sequence")
+    name = "sequence",
+    sequenceName = "operation_id_sequence")
 public abstract class Operation
 extends BaseEntity
 {
     @NotNull
-    @Column(name = "amount", nullable = false)
+    @Column(name = "time", nullable = false)
+    @Type(type = "dateTime")
+    private DateTime time;
+
+    @NotNull
+    @Columns(columns = {
+        @Column(name = "currency", nullable = false),
+        @Column(name = "amount", nullable = false)
+    })
+    @Type(type = "money")
     private Money amount;
 
     /**
@@ -47,6 +61,28 @@ extends BaseEntity
      */
     public Operation()
     {
+    }
+
+    /**
+     * Gets the time.
+     *
+     * @return time.
+     */
+    public DateTime getTime()
+    {
+        return time;
+    }
+
+    /**
+     * Sets the time.
+     *
+     * @param time
+     *        time.
+     */
+    public void setTime(
+        DateTime time)
+    {
+        this.time = time;
     }
 
     /**
@@ -75,6 +111,7 @@ extends BaseEntity
     protected MoreObjects.ToStringHelper toStringHelper()
     {
         return super.toStringHelper()
+            .add("time", time)
             .add("amount", amount);
     }
 }

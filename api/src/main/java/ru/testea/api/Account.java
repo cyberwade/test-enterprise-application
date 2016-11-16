@@ -1,6 +1,8 @@
 package ru.testea.api;
 
 import com.google.common.base.MoreObjects;
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
 import org.joda.money.Money;
 import org.joda.time.DateTime;
 
@@ -29,7 +31,8 @@ import javax.validation.constraints.NotNull;
         nullable = false))
 @SequenceGenerator(
     schema = Constants.DB_SCHEMA_NAME,
-    name = "account_id_sequence")
+    name = "sequence",
+    sequenceName = "account_id_sequence")
 public class Account
 extends BaseEntity
 {
@@ -39,10 +42,15 @@ extends BaseEntity
 
     @NotNull
     @Column(name = "creation_time", nullable = false)
+    @Type(type = "dateTime")
     private DateTime creationTime;
 
     @NotNull
-    @Column(name = "amount", nullable = false)
+    @Columns(columns = {
+        @Column(name = "currency", nullable = false),
+        @Column(name = "amount", nullable = false)
+    })
+    @Type(type = "money")
     private Money amount;
 
     @NotNull

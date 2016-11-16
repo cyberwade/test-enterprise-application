@@ -19,14 +19,6 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <warName>test-enterprise-application</warName>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

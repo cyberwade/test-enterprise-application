@@ -29,7 +29,8 @@ import java.util.Set;
         nullable = false))
 @SequenceGenerator(
     schema = Constants.DB_SCHEMA_NAME,
-    name = "client_id_sequence")
+    name = "sequence",
+    sequenceName = "client_id_sequence")
 public class Client
 extends BaseEntity
 {
