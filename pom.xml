@@ -17,37 +17,60 @@
     </modules>
 
     <properties>
-        <javaee.version>7.0</javaee.version>
         <validation.version>1.1.0.Final</validation.version>
         <guava.version>20.0</guava.version>
+        <spring.version>4.3.4.RELEASE</spring.version>
         <hibernate.version>5.1.2.Final</hibernate.version>
+        <postgresql.version>9.4-1200-jdbc41</postgresql.version>
         <joda.money.version>0.12</joda.money.version>
         <joda.time.version>2.9.5</joda.time.version>
-        <postgresql.version>9.4-1200-jdbc41</postgresql.version>
         <jadira.version>5.0.0.GA</jadira.version>
         <application.version>1.0.0-SNAPSHOT</application.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>${javaee.version}</version>
-            </dependency>
-
+            <!-- Validation. -->
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${validation.version}</version>
             </dependency>
 
+            <!-- Google Guava. -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
 
+            <!-- Spring. -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- Hibernate. -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -67,6 +90,20 @@
             </dependency>
 
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <!-- PostgreSQL. -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <!-- Joda Time, Money, Jadira. -->
+            <dependency>
                 <groupId>org.joda</groupId>
                 <artifactId>joda-money</artifactId>
                 <version>${joda.money.version}</version>
@@ -76,12 +113,6 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${joda.time.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
             </dependency>
 
             <dependency>

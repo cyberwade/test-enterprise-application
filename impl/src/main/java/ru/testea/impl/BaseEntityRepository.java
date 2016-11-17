@@ -4,6 +4,8 @@ import ru.testea.api.BaseEntity;
 import ru.testea.api.BaseEntity_;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -15,17 +17,18 @@ import java.util.List;
  * @param <E>
  *        entity type.
  */
-abstract class BaseRepository<E extends BaseEntity>
+abstract class BaseEntityRepository<E extends BaseEntity>
 {
     /**
      * {@link EntityManager} instance.
      */
+    @PersistenceContext
     protected EntityManager entityManager;
 
     /**
      * Creates a new query repository.
      */
-    protected BaseRepository()
+    protected BaseEntityRepository()
     {
     }
 
@@ -39,18 +42,6 @@ abstract class BaseRepository<E extends BaseEntity>
         E entity)
     {
         entityManager.persist(entity);
-    }
-
-    /**
-     * Delegate for the {@link EntityManager#merge(Object)}.
-     *
-     * @param entity
-     *        entity.
-     */
-    public void merge(
-        E entity)
-    {
-        entityManager.merge(entity);
     }
 
     /**
@@ -76,6 +67,20 @@ abstract class BaseRepository<E extends BaseEntity>
         Long id)
     {
         return entityManager.find(getEntityClass(), id);
+    }
+
+    /**
+     * Finds the entity by specified identifier and locks it for update.
+     *
+     * @param id
+     *        entity identifier
+     * @return found entity or {@code null}, if entity was not found.
+     */
+    public E findAndLock(
+        Long id)
+    {
+        return entityManager.find(getEntityClass(), id,
+            LockModeType.PESSIMISTIC_WRITE);
     }
 
     /**

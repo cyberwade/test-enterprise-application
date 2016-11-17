@@ -32,7 +32,8 @@ import javax.validation.constraints.NotNull;
 @SequenceGenerator(
     schema = Constants.DB_SCHEMA_NAME,
     name = "sequence",
-    sequenceName = "account_id_sequence")
+    sequenceName = "account_id_sequence",
+    allocationSize = 1)
 public class Account
 extends BaseEntity
 {

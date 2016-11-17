@@ -1,5 +1,6 @@
 package ru.testea.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.testea.api.Account;
 
 /**
@@ -9,8 +10,9 @@ import ru.testea.api.Account;
  *
  * @author Vadim Kuznetskikh
  */
+@Repository
 class AccountRepository
-extends BaseRepository<Account>
+extends BaseEntityRepository<Account>
 {
     /**
      * Creates a new query repository.

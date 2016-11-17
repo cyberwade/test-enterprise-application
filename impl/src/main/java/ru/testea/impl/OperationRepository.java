@@ -1,5 +1,6 @@
 package ru.testea.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.testea.api.Operation;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,8 +15,9 @@ import java.util.List;
  *
  * @author Vadim Kuznetskikh
  */
+@Repository
 class OperationRepository
-extends BaseRepository<Operation>
+extends BaseEntityRepository<Operation>
 {
     /**
      * Creates a new query repository.

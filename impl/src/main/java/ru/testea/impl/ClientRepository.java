@@ -1,5 +1,6 @@
 package ru.testea.impl;
 
+import org.springframework.stereotype.Repository;
 import ru.testea.api.Client;
 import ru.testea.api.Client_;
 
@@ -12,8 +13,9 @@ import javax.persistence.criteria.Root;
  *
  * @author Vadim Kuznetskikh
  */
+@Repository
 class ClientRepository
-extends BaseRepository<Client>
+extends BaseEntityRepository<Client>
 {
     /**
      * Creates a new query repository.

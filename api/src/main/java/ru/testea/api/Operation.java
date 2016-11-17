@@ -39,7 +39,8 @@ import javax.validation.constraints.NotNull;
 @SequenceGenerator(
     schema = Constants.DB_SCHEMA_NAME,
     name = "sequence",
-    sequenceName = "operation_id_sequence")
+    sequenceName = "operation_id_sequence",
+    allocationSize = 1)
 public abstract class Operation
 extends BaseEntity
 {
