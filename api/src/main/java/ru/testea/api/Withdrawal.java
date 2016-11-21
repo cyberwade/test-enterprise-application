@@ -4,19 +4,19 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
- * Account payment.
+ * Account withdrawal.
  *
  * @author Vadim Kuznetskikh
  */
 @Entity
-@DiscriminatorValue("PAYMENT")
-public class Payment
+@DiscriminatorValue("WITHDRAWAL")
+public class Withdrawal
 extends Operation
 {
     /**
-     * Creates a new account payment.
+     * Creates a new account withdrawal.
      */
-    public Payment()
+    public Withdrawal()
     {
     }
 }

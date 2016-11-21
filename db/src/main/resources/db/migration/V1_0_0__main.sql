@@ -27,7 +27,7 @@ CREATE TABLE test.accounts (
 CREATE SEQUENCE test.operation_id_sequence START WITH 1;
 
 CREATE DOMAIN test.operation_type AS TEXT
-CHECK (VALUE IN ('PAYMENT', 'RECEIPT', 'TRANSFER'));
+CHECK (VALUE IN ('DEPOSITION', 'WITHDRAWAL', 'TRANSFER'));
 
 CREATE TABLE test.operations (
   operation_id        bigint                NOT NULL   DEFAULT nextval('operation_id_sequence')   PRIMARY KEY,

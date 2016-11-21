@@ -4,19 +4,19 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
- * Account receipt.
+ * Account deposition.
  *
  * @author Vadim Kuznetskikh
  */
 @Entity
-@DiscriminatorValue("RECEIPT")
-public class Receipt
+@DiscriminatorValue("DEPOSITION")
+public class Deposition
 extends Operation
 {
     /**
-     * Creates a new account receipt.
+     * Creates a new account deposition.
      */
-    public Receipt()
+    public Deposition()
     {
     }
 }

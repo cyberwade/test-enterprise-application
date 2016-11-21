@@ -31,7 +31,8 @@ extends BaseEntityRepository<Client>
     }
 
     @Override
-    protected void initializeAssociations(Root<Client> root)
+    protected void initializeAssociations(
+        Root<Client> root)
     {
         root.fetch(Client_.accounts);
     }

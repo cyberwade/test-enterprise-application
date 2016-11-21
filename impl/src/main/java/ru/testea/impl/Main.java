@@ -13,8 +13,8 @@ public class Main
     public static void main(
         String[] args)
     {
-        ClassPathXmlApplicationContext context =
-            new ClassPathXmlApplicationContext("META-INF/spring.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+            "classpath:META-INF/applicationContext.xml");
 
         IClientCRUDService clientCRUDService =
             context.getBean(IClientCRUDService.class);

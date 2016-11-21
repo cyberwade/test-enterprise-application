@@ -29,8 +29,20 @@ implements IBaseEntityCRUDService<E>
     /**
      * Entity query repository.
      */
-    @Autowired
     protected R repository;
+
+    /**
+     * Initializes the query repository.
+     *
+     * @param repository
+     *        query repository.
+     */
+    @Autowired
+    public void initialize(
+        R repository)
+    {
+        this.repository = repository;
+    }
 
     /**
      * Creates new CRUD service.
@@ -91,17 +103,18 @@ implements IBaseEntityCRUDService<E>
     }
 
     @Override
-    public void update(
+    public E update(
         Function<E, Void> updater,
-        E entity)
+        Long id)
     {
         Preconditions.checkNotNull(updater, "Updater cannot be null.");
-        validateId(entity.getId());
-        validateEntity(entity);
+        validateId(id);
 
-        repository.findAndLock(entity.getId());
+        E entity = repository.findAndLock(id);
 
         updater.apply(entity);
+
+        return entity;
     }
 
     @Override
@@ -122,7 +135,7 @@ implements IBaseEntityCRUDService<E>
     private void validateId(
         Long id)
     {
-        Preconditions.checkNotNull(id, "Id cannot be null.");
+        Preconditions.checkNotNull(id, "Entity id cannot be null.");
     }
 
     private E getInternal(
@@ -134,7 +147,8 @@ implements IBaseEntityCRUDService<E>
 
         if (entity == null)
         {
-            throw new EntityNotFoundException(String.format("Entity was not found by id: %s.", id));
+            throw new EntityNotFoundException(
+                String.format("Entity was not found by id: %s.", id));
         }
 
         return entity;

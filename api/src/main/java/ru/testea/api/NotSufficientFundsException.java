@@ -1,12 +1,13 @@
 package ru.testea.api;
 
 /**
- * Exception throwing when entity was not found, for example, by identifier.
+ * Exception throwing when account had not sufficient funds on operation
+ * processing.
  *
  * @author Vadim Kuznetskikh
  */
-public class EntityNotFoundException
-extends BusinessLogicException
+public class NotSufficientFundsException
+extends OperationException
 {
     /**
      * Creates a new exception with specified message.
@@ -14,7 +15,7 @@ extends BusinessLogicException
      * @param message
      *        message.
      */
-    public EntityNotFoundException(
+    public NotSufficientFundsException(
         String message)
     {
         super(message);

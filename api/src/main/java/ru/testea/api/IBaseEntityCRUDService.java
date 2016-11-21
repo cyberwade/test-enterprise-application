@@ -67,12 +67,16 @@ public interface IBaseEntityCRUDService<E extends BaseEntity>
      *
      * @param updater
      *        function for update entity data.
-     * @param entity
-     *        entity.
+     * @param id
+     *        entity identifier.
+     * @return entity.
+     * @throws EntityNotFoundException
+     *         throws when entity was not found by specified identifier.
      */
-    void update(
+    E update(
         Function<E, Void> updater,
-        E entity);
+        Long id)
+    throws EntityNotFoundException;
 
     /**
      * Deletes the specified entity.

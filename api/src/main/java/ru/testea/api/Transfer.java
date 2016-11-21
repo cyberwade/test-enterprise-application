@@ -18,11 +18,6 @@ extends Operation
 {
     @NotNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "source_account_id", nullable = false)
-    private Account sourceAccount;
-
-    @NotNull
-    @ManyToOne(optional = false)
     @JoinColumn(name = "target_account_id", nullable = false)
     private Account targetAccount;
 
@@ -31,28 +26,6 @@ extends Operation
      */
     public Transfer()
     {
-    }
-
-    /**
-     * Gets the source account.
-     *
-     * @return source account.
-     */
-    public Account getSourceAccount()
-    {
-        return sourceAccount;
-    }
-
-    /**
-     * Sets the source account.
-     *
-     * @param sourceAccount
-     *        source account.
-     */
-    public void setSourceAccount(
-        Account sourceAccount)
-    {
-        this.sourceAccount = sourceAccount;
     }
 
     /**

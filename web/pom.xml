@@ -14,6 +14,46 @@
     <description>Test enterprise application web module.</description>
     <packaging>war</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.test-enterprise-application</groupId>
+            <artifactId>test-enterprise-application-api</artifactId>
+            <version>${application.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.test-enterprise-application</groupId>
+            <artifactId>test-enterprise-application-impl</artifactId>
+            <version>${application.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

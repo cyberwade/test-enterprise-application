@@ -1,11 +1,12 @@
 package ru.testea.api;
 
 /**
- * Exception throwing when entity was not found, for example, by identifier.
+ * Exception throwing when business logic restrictions was violated on
+ * operation processing.
  *
  * @author Vadim Kuznetskikh
  */
-public class EntityNotFoundException
+public class OperationException
 extends BusinessLogicException
 {
     /**
@@ -14,7 +15,7 @@ extends BusinessLogicException
      * @param message
      *        message.
      */
-    public EntityNotFoundException(
+    public OperationException(
         String message)
     {
         super(message);

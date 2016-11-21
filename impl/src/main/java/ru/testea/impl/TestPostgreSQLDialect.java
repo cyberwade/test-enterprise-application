@@ -1,7 +1,7 @@
 package ru.testea.impl;
 
-import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.metamodel.spi.TypeContributions;
 import org.hibernate.service.ServiceRegistry;
 import org.jadira.usertype.dateandtime.joda.PersistentDateTime;
 import org.jadira.usertype.moneyandcurrency.joda.PersistentMoneyAmountAndCurrency;
@@ -35,8 +35,8 @@ extends PostgresPlusDialect
         super.contributeTypes(typeContributions, serviceRegistry);
 
         typeContributions.contributeType(
-            new PersistentMoneyAmountAndCurrency(), "money");
+            new PersistentMoneyAmountAndCurrency(), new String[] {"money"});
         typeContributions.contributeType(
-            new PersistentDateTime(), "dateTime");
+            new PersistentDateTime(), new String[] {"dateTime"});
     }
 }
