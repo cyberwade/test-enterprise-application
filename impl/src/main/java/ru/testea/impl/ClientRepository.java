@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.testea.api.Client;
 import ru.testea.api.Client_;
 
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 /**
@@ -34,6 +35,6 @@ extends BaseEntityRepository<Client>
     protected void initializeAssociations(
         Root<Client> root)
     {
-        root.fetch(Client_.accounts);
+        root.fetch(Client_.accounts, JoinType.LEFT);
     }
 }

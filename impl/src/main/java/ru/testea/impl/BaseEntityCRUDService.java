@@ -32,6 +32,13 @@ implements IBaseEntityCRUDService<E>
     protected R repository;
 
     /**
+     * Creates new CRUD service.
+     */
+    public BaseEntityCRUDService()
+    {
+    }
+
+    /**
      * Initializes the query repository.
      *
      * @param repository
@@ -42,13 +49,6 @@ implements IBaseEntityCRUDService<E>
         R repository)
     {
         this.repository = repository;
-    }
-
-    /**
-     * Creates new CRUD service.
-     */
-    public BaseEntityCRUDService()
-    {
     }
 
     @Override
@@ -107,7 +107,6 @@ implements IBaseEntityCRUDService<E>
         Function<E, Void> updater,
         Long id)
     {
-        Preconditions.checkNotNull(updater, "Updater cannot be null.");
         validateId(id);
 
         E entity = repository.findAndLock(id);
@@ -118,10 +117,35 @@ implements IBaseEntityCRUDService<E>
     }
 
     @Override
-    public void delete(
+    public E merge(
         E entity)
+    throws EntityNotFoundException
     {
         validateEntity(entity);
+        validateId(entity.getId());
+
+        repository.findAndLock(entity.getId());
+        repository.merge(entity);
+
+        return entity;
+    }
+
+    @Override
+    public void delete(
+        Long id)
+    throws EntityNotFoundException
+    {
+        validateId(id);
+
+        E entity = getInternal(id, new Function<Long, E>()
+        {
+            @Override
+            public E apply(
+                Long id)
+            {
+                return repository.findAndLock(id);
+            }
+        });
 
         repository.remove(entity);
     }

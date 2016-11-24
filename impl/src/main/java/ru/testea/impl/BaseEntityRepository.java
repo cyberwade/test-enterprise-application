@@ -23,13 +23,25 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      * {@link EntityManager} instance.
      */
     @PersistenceContext
-    protected EntityManager entityManager;
+    EntityManager entityManager;
 
     /**
      * Creates a new query repository.
      */
-    protected BaseEntityRepository()
+    BaseEntityRepository()
     {
+    }
+
+    /**
+     * Delegate for the {@link EntityManager#persist(Object)}.
+     *
+     * @param entity
+     *        entity.
+     */
+    void persist(
+        E entity)
+    {
+        entityManager.persist(entity);
     }
 
     /**
@@ -38,10 +50,10 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      * @param entity
      *        entity.
      */
-    public void persist(
+    void merge(
         E entity)
     {
-        entityManager.persist(entity);
+        entityManager.merge(entity);
     }
 
     /**
@@ -50,7 +62,7 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      * @param entity
      *        entity.
      */
-    public void remove(
+    void remove(
         E entity)
     {
         entityManager.remove(entity);
@@ -63,7 +75,7 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      *        entity identifier
      * @return found entity or {@code null}, if entity was not found.
      */
-    public E find(
+    E find(
         Long id)
     {
         return entityManager.find(getEntityClass(), id);
@@ -76,7 +88,7 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      *        entity identifier
      * @return found entity or {@code null}, if entity was not found.
      */
-    public E findAndLock(
+    E findAndLock(
         Long id)
     {
         return entityManager.find(getEntityClass(), id,
@@ -90,7 +102,7 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      *        entity identifier.
      * @return found entity or {@code null}, if entity was not found.
      */
-    public E get(
+    E get(
         Long id)
     {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -117,7 +129,7 @@ abstract class BaseEntityRepository<E extends BaseEntity>
      *
      * @return entities list.
      */
-    public List<E> listAll()
+    List<E> listAll()
     {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteriaQuery = criteriaBuilder.createQuery(

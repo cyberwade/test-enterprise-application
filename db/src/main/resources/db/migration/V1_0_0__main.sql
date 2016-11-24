@@ -19,7 +19,7 @@ CREATE TABLE test.accounts (
   amount          numeric       NOT NULL,
   currency        text          NOT NULL,
   client_id       bigint        NOT NULL,
-  FOREIGN KEY (client_id) REFERENCES test.clients (client_id)
+  FOREIGN KEY (client_id) REFERENCES test.clients (client_id) ON DELETE CASCADE
 );
 
 
@@ -37,6 +37,6 @@ CREATE TABLE test.operations (
   currency            text                  NOT NULL,
   source_account_id   bigint,
   target_account_id   bigint,
-  FOREIGN KEY (source_account_id) REFERENCES test.accounts (account_id),
-  FOREIGN KEY (target_account_id) REFERENCES test.accounts (account_id)
+  FOREIGN KEY (source_account_id) REFERENCES test.accounts (account_id) ON DELETE CASCADE,
+  FOREIGN KEY (target_account_id) REFERENCES test.accounts (account_id) ON DELETE CASCADE
 );

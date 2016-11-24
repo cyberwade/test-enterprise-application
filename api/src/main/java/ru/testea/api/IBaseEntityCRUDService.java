@@ -79,11 +79,27 @@ public interface IBaseEntityCRUDService<E extends BaseEntity>
     throws EntityNotFoundException;
 
     /**
-     * Deletes the specified entity.
+     * Merges the data of the specified entity.
      *
      * @param entity
      *        entity.
+     * @return entity.
+     * @throws EntityNotFoundException
+     *         throws when entity was not found by identifier.
+     */
+    E merge(
+        E entity)
+    throws EntityNotFoundException;
+
+    /**
+     * Deletes the entity with specified identifier.
+     *
+     * @param id
+     *        entity identifier.
+     * @throws EntityNotFoundException
+     *         throws when entity was not found by specified identifier.
      */
     void delete(
-        E entity);
+        Long id)
+    throws EntityNotFoundException;
 }

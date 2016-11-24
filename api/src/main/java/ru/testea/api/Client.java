@@ -1,6 +1,7 @@
 package ru.testea.api;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.collect.Sets;
 import org.joda.time.LocalDate;
 
 import javax.persistence.AttributeOverride;
@@ -47,7 +48,8 @@ extends BaseEntity
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+        mappedBy = "client")
     private Set<Account> accounts;
 
     /**
@@ -142,11 +144,20 @@ extends BaseEntity
     public void setAccounts(
         Set<Account> accounts)
     {
-        this.accounts = accounts;
+        if (this.accounts == null)
+        {
+            this.accounts = Sets.newHashSet();
+        }
+        else
+        {
+            this.accounts.clear();
+        }
+
+        this.accounts.addAll(accounts);
     }
 
     @Override
-    protected MoreObjects.ToStringHelper toStringHelper()
+    protected ToStringHelper toStringHelper()
     {
         return super.toStringHelper()
             .add("fullName", fullName)

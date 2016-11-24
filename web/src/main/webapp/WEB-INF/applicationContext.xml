@@ -9,4 +9,6 @@
 
     <context:component-scan base-package="ru.testea.web" />
 
+    <import resource="classpath:META-INF/applicationContext.xml" />
+
 </beans>

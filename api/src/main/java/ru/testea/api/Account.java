@@ -1,6 +1,6 @@
 package ru.testea.api;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects.ToStringHelper;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.money.Money;
@@ -155,7 +155,7 @@ extends BaseEntity
     }
 
     @Override
-    protected MoreObjects.ToStringHelper toStringHelper()
+    protected ToStringHelper toStringHelper()
     {
         return super.toStringHelper()
             .add("name", name)

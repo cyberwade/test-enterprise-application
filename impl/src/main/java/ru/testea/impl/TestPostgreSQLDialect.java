@@ -35,8 +35,8 @@ extends PostgresPlusDialect
         super.contributeTypes(typeContributions, serviceRegistry);
 
         typeContributions.contributeType(
-            new PersistentMoneyAmountAndCurrency(), new String[] {"money"});
+            new PersistentMoneyAmountAndCurrency(), new String[] { "money" });
         typeContributions.contributeType(
-            new PersistentDateTime(), new String[] {"dateTime"});
+            new PersistentDateTime(), new String[] { "dateTime" });
     }
 }

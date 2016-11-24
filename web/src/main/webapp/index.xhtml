@@ -2,8 +2,135 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-<h:body>
-    <p>#{clientBean.size}</p>
-</h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <h:head>
+        <title>Справочник клиентов</title>
+        <h:outputStylesheet name="css/style.css" />
+    </h:head>
+    <h:body onload="#{clientBean.reloadClients(null)}">
+        <h:form id="form">
+            <h:panelGrid columns="2" styleClass="basePanel" columnClasses="listPanel,formPanel">
+                <h:panelGroup>
+                    <a4j:outputPanel id="listPanel">
+                        <rich:panel styleClass="listPanel">
+                            <f:facet name="header">
+                                Клиенты
+                            </f:facet>
+                            <rich:extendedDataTable value="#{clientBean.clients}" var="client" selectionMode="single"
+                                                    selection="#{clientBean.clientSelection}" styleClass="dataTable">
+                                <a4j:ajax event="selectionchange" render="formPanel, buttonPanel"
+                                          listener="#{clientBean.handleSelection}"/>
+                                <rich:column>
+                                    <h:outputText value="#{client.fullName}"/>
+                                </rich:column>
+                            </rich:extendedDataTable>
+                        </rich:panel>
+                    </a4j:outputPanel>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <a4j:outputPanel id="formPanel">
+                        <rich:panel styleClass="formPanel" rendered="#{not empty clientBean.selectedClient}">
+                            <rich:tabPanel switchType="client" tabHeaderClass="header" styleClass="formPanel">
+                                <rich:tab header="Общие данные">
+                                    <h:panelGrid columns="1">
+                                        <h:outputLabel value="ФИО" for="fullNameField" styleClass="label"/>
+                                        <h:inputText id="fullNameField" value="#{clientBean.selectedClient.fullName}"
+                                                     styleClass="textField">
+                                            <a4j:ajax execute="fullNameField" event="keyup" render="buttonPanel"
+                                                      listener="#{clientBean.handleSelectedClientChange}"/>
+                                        </h:inputText>
+                                        <h:outputLabel value="Адрес" for="addressField" styleClass="label"/>
+                                        <h:inputText id="addressField" value="#{clientBean.selectedClient.address}"
+                                                     styleClass="textField">
+                                            <a4j:ajax execute="addressField" event="keyup" render="buttonPanel"
+                                                      listener="#{clientBean.handleSelectedClientChange}"/>
+                                        </h:inputText>
+                                        <h:outputLabel value="Дата рождения" for="birthdayField" styleClass="label"/>
+                                        <rich:calendar id="birthdayField" value="#{clientBean.selectedClient.birthday}"
+                                                       datePattern="dd.MM.yyyy" enableManualInput="true"
+                                                       converter="localDateConverter" styleClass="dateField">
+                                            <a4j:ajax execute="birthdayField" event="change" render="buttonPanel"
+                                                      listener="#{clientBean.handleSelectedClientChange}"/>
+                                        </rich:calendar>
+                                    </h:panelGrid>
+                                </rich:tab>
+                                <rich:tab header="Счета">
+                                    <a4j:outputPanel id="accountsPanel">
+                                        <rich:dataTable value="#{clientBean.selectedClientAccounts}" var="account"
+                                                        styleClass="dataTable">
+                                            <h:column>
+                                                <h:outputLabel value="Название" for="nameTextField" styleClass="label"/>
+                                                <h:inputText id="nameTextField" value="#{account.name}"
+                                                             styleClass="shortTextField">
+                                                    <a4j:ajax execute="nameTextField" event="keyup" render="buttonPanel"
+                                                              listener="#{clientBean.handleSelectedClientChange}"/>
+                                                </h:inputText>
+                                            </h:column>
+                                            <h:column>
+                                                <h:outputLabel value="Сумма" for="amountTextField" styleClass="label"/>
+                                                <h:inputText id="amountTextField" value="#{account.amount}"
+                                                             required="false"
+                                                             styleClass="shortTextField" converter="moneyConverter">
+                                                    <a4j:ajax execute="amountTextField" event="keyup"
+                                                              render="buttonPanel"
+                                                              listener="#{clientBean.handleSelectedClientChange}"/>
+                                                </h:inputText>
+                                            </h:column>
+                                            <h:column>
+                                                <a4j:commandButton value="X" styleClass="button"
+                                                                   action="#{clientBean.deleteAccount(account)}"
+                                                                   render="accountsPanel,buttonPanel"/>
+                                            </h:column>
+                                        </rich:dataTable>
+                                        <a4j:commandButton value="+" styleClass="button"
+                                                           action="#{clientBean.addAccount}"
+                                                           render="accountsPanel,buttonPanel"/>
+                                    </a4j:outputPanel>
+                                </rich:tab>
+                            </rich:tabPanel>
+                        </rich:panel>
+                    </a4j:outputPanel>
+                </h:panelGroup>
+            </h:panelGrid>
+            <a4j:outputPanel id="buttonPanel">
+                <rich:panel styleClass="buttonPanel">
+                    <a4j:commandButton value="Добавить" styleClass="button" action="#{clientBean.addClient}"
+                                       render="listPanel,formPanel,buttonPanel"/>
+                    <a4j:commandButton value="Сохранить" styleClass="button" action="#{clientBean.saveClient}"
+                                       render="listPanel,formPanel,buttonPanel"
+                                       disabled="#{!clientBean.selectedClientValid}"/>
+                    <h:commandButton value="Удалить" styleClass="button"
+                                     render="listPanel,formPanel,buttonPanel"
+                                     disabled="#{empty clientBean.selectedClient or empty clientBean.selectedClient.id}">
+                        <rich:componentControl target="confirmDeleteDialog" operation="show"/>
+                    </h:commandButton>
+                    <rich:popupPanel id="confirmDeleteDialog" modal="true" resizeable="false"
+                                     onmaskclick="#{rich:component('confirmDeleteDialog')}.hide()"
+                                     styleClass="dialog">
+                        <f:facet name="header">
+                            <h:outputText value="Подтверждение удаления."/>
+                        </f:facet>
+                        <f:facet name="controls">
+                            <h:outputLink value="#"
+                                          onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"
+                                          style="color: inherit">
+                                X
+                            </h:outputLink>
+                        </f:facet>
+                        <p>Вы действительно хотите удалить клиента?</p>
+                        <rich:panel styleClass="buttonPanel dialogButtonPanel">
+                            <a4j:commandButton value="ОК" styleClass="button" action="#{clientBean.deleteClient}"
+                                               onclick="#{rich:component('confirmDeleteDialog')}.hide(); return true;"
+                                               render="listPanel,formPanel,buttonPanel"/>
+                            <a4j:commandButton value="Отмена" styleClass="button"
+                                               onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"/>
+                        </rich:panel>
+                    </rich:popupPanel>
+                </rich:panel>
+            </a4j:outputPanel>
+        </h:form>
+    </h:body>
 </html>

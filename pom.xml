@@ -20,8 +20,8 @@
         <javaee.version>6.0</javaee.version>
         <validation.version>1.1.0.Final</validation.version>
         <jsf.version>2.2.14</jsf.version>
-        <primefaces.version>6.0</primefaces.version>
-        <guava.version>20.0</guava.version>
+        <richfaces.version>4.0.0.Final</richfaces.version>
+        <guava.version>13.0.1</guava.version>
         <spring.version>3.2.8.RELEASE</spring.version>
         <hibernate.version>4.2.21.Final</hibernate.version>
         <jpamodelgen.version>4.3.11.Final</jpamodelgen.version>
@@ -63,11 +63,31 @@
                 <version>${jsf.version}</version>
             </dependency>
 
-            <!-- Primefaces. -->
+            <!-- RichFaces -->
             <dependency>
-                <groupId>org.primefaces</groupId>
-                <artifactId>primefaces</artifactId>
-                <version>${primefaces.version}</version>
+                <groupId>org.richfaces</groupId>
+                <artifactId>richfaces-bom</artifactId>
+                <version>${richfaces.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.richfaces.core</groupId>
+                <artifactId>richfaces-core-api</artifactId>
+                <version>${richfaces.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.richfaces.core</groupId>
+                <artifactId>richfaces-core-impl</artifactId>
+                <version>${richfaces.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.richfaces.ui</groupId>
+                <artifactId>richfaces-components-ui</artifactId>
+                <version>${richfaces.version}</version>
             </dependency>
 
             <!-- Google Guava. -->

@@ -1,0 +1,106 @@
+/* Override base styles. */
+.rf-edt-c, .rf-tab-hdr-tabline-vis {
+    width: 100% !important;
+    border: none !important;
+}
+
+.rf-edt-b div table {
+    width: 100% !important;
+}
+
+.rf-p-hdr, .rf-pp-hdr-cnt, .rf-tab-lbl {
+    font-size: 16px !important;
+}
+
+.rf-p-b {
+    height: 90% !important;
+    border: none !important;
+}
+
+.rf-edt, .rf-tab {
+    height: 100% !important;
+}
+
+.rf-tab-cnt {
+    height: 85% !important;
+}
+
+.rf-edt-c-cnt, .rf-pp-cnt, .rf-cal-inp {
+    font-size: 14px !important;
+}
+
+.rf-edt-c-cnt {
+    cursor: pointer !important;
+}
+
+.rf-edt-cnt {
+    height: auto !important;
+}
+
+.rf-edt-ftr {
+    height: 0 !important;
+    border: none !important;
+}
+
+.rf-edt-r-act {
+    font-weight: normal !important;
+}
+
+.rf-edt-r-sel {
+    font-weight: bold !important;
+}
+
+
+/* Custom styles. */
+.basePanel {
+    height: 500px;
+}
+
+.listPanel {
+    width: 300px;
+    height: 500px;
+}
+
+.dataTable {
+    border-style: none;
+    max-width: 300px;
+}
+
+.formPanel {
+    height: 500px;
+    width: 100%;
+    vertical-align: top;
+    border: none !important;
+}
+
+.buttonPanel {
+    border: none !important;
+}
+
+.label {
+    font-size: 12px !important;
+}
+
+.textField, .shortTextField, .button, .dialog {
+    font-size: 14px !important;
+}
+
+.dialog {
+    height: 200px;
+}
+
+.textField {
+    width: 400px;
+}
+
+.shortTextField {
+    width: 200px;
+}
+
+.button {
+    margin: 5px !important;
+}
+
+.dialogButtonPanel {
+    text-align: right;
+}
