@@ -14,20 +14,10 @@
     <description>Test enterprise application database module.</description>
     <packaging>jar</packaging>
 
-    <properties>
-        <flyway.version>4.0.3</flyway.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>${flyway.version}</version>
         </dependency>
     </dependencies>
 
@@ -39,7 +29,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway.version}</version>
+                <version>4.0.3</version>
                 <executions>
                     <execution>
                         <phase>install</phase>
@@ -53,7 +43,9 @@
                     <driver>org.postgresql.Driver</driver>
                     <user>test</user>
                     <password>test</password>
-                    <schemas>test</schemas>
+                    <schemas>
+                        <schema>test</schema>
+                    </schemas>
                 </configuration>
             </plugin>
         </plugins>
