@@ -16,6 +16,7 @@ public class Main
 {
     public static void main(
         String[] args)
+    throws Exception
     {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
             "classpath:META-INF/applicationContext.xml");
@@ -36,7 +37,7 @@ public class Main
 
         Account a2 = new Account();
         a2.setName("a2");
-        a2.setAmount(Money.of(Constants.CURRENCY, BigDecimal.ONE));
+        a2.setAmount(Money.of(Constants.CURRENCY, BigDecimal.TEN));
         a2.setCreationTime(DateTime.now());
         a2.setClient(client);
 

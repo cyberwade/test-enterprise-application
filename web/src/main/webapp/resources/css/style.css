@@ -50,6 +50,22 @@
     font-weight: bold !important;
 }
 
+.rf-pp-shdw, .rf-pp-cnt-scrlr, .rf-pp-cntr  {
+    width: 330px !important;
+}
+
+.rf-pp-cnt-scrlr {
+    height: 124px;
+}
+
+.rf-pp-cntr {
+    height: 180px !important;
+}
+
+.rf-pp-cnt-scrlr {
+    height: 154px !important;
+}
+
 
 /* Custom styles. */
 .basePanel {
@@ -85,8 +101,18 @@
     font-size: 14px !important;
 }
 
+.link {
+    font-size: 24px;
+    padding: 5px;
+    margin: 15px 20px;
+}
+
 .dialog {
     height: 200px;
+}
+
+.dialogField {
+    width: 150px !important;
 }
 
 .textField {

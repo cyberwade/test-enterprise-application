@@ -24,9 +24,10 @@ implements IOperationCRUDService
     }
 
     @Override
-    public <T extends Operation> List<T> listByType(
-        Class<T> type)
+    public <T extends Operation> List<T> listByTypeAndClientId(
+        Class<T> type,
+        Long clientId)
     {
-        return repository.listByType(type);
+        return repository.listByType(type, clientId);
     }
 }

@@ -12,7 +12,8 @@ extends IBaseEntityCRUDService<Operation>
 {
     /**
      * <p>
-     * Gets the operations list by the specified operation type.
+     * Gets the operations list by the specified operation type
+     * and client identifier.
      * </p>
      *
      * <p>
@@ -21,10 +22,13 @@ extends IBaseEntityCRUDService<Operation>
      *
      * @param type
      *        type (class) of the operation.
+     * @param clientId
+     *        client identifier.
      * @param <T>
      *        result operation type.
      * @return operations list.
      */
-    <T extends Operation> List<T> listByType(
-        Class<T> type);
+    <T extends Operation> List<T> listByTypeAndClientId(
+        Class<T> type,
+        Long clientId);
 }

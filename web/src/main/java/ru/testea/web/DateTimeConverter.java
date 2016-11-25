@@ -1,24 +1,31 @@
 package ru.testea.web;
 
 import com.google.common.base.Strings;
-import org.joda.money.Money;
-import ru.testea.api.Constants;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import java.math.BigDecimal;
 
 /**
- * Faces converter for {@link Money}.
+ * Faces converter for {@link DateTime}.
  *
  * @author Vadim Kuznetskikh
  */
-@FacesConverter("moneyConverter")
-public class MoneyConverter
-implements Converter
+@FacesConverter("dateTimeConverter")
+public class DateTimeConverter
+extends javax.faces.convert.DateTimeConverter
 {
+    public static final String DATE_TIME_PATTERN = "dd.MM.yyyy HH:mm";
+
+    /**
+     * Creates new converter.
+     */
+    public DateTimeConverter()
+    {
+    }
+
     @Override
     public Object getAsObject(
         FacesContext facesContext,
@@ -26,16 +33,17 @@ implements Converter
         String s)
     {
         String value = Strings.nullToEmpty(s).trim();
-        if (value.isEmpty())
+        if(value.isEmpty())
         {
             return null;
         }
 
         try
         {
-            return Money.of(Constants.CURRENCY, new BigDecimal(value));
+            return DateTime.parse(value,
+                DateTimeFormat.forPattern(DATE_TIME_PATTERN));
         }
-        catch (NumberFormatException | ArithmeticException e)
+        catch(IllegalArgumentException e)
         {
             return null;
         }
@@ -47,6 +55,6 @@ implements Converter
         UIComponent uiComponent,
         Object o)
     {
-        return o == null ? "" : ((Money) o).getAmount().toString();
+        return o == null ? "" : ((DateTime) o).toString(DATE_TIME_PATTERN);
     }
 }

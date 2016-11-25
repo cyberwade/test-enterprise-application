@@ -2,22 +2,13 @@ package ru.testea.web;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
-import org.richfaces.component.UIExtendedDataTable;
 import ru.testea.api.Account;
 import ru.testea.api.Client;
 import ru.testea.api.EntityNotFoundException;
-import ru.testea.api.IClientCRUDService;
 
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Clients bean.
@@ -27,18 +18,8 @@ import java.util.List;
 @ViewScoped
 @Named
 public class ClientBean
+extends BaseClientBean
 {
-    @Inject
-    private IClientCRUDService crudService;
-
-    private List<Client> clients;
-
-    private Collection<Integer> clientSelection;
-
-    private Client selectedClient;
-
-    private List<Account> selectedClientAccounts;
-
     private Boolean selectedClientValid;
 
     /**
@@ -48,142 +29,13 @@ public class ClientBean
     {
     }
 
-    /**
-     * Gets the clients list.
-     *
-     * @return clients list.
-     * @throws EntityNotFoundException
-     *         if client was not found by identifier.
-     */
-    public List<Client> getClients()
-    throws EntityNotFoundException
-    {
-        if (clients == null)
-        {
-            reloadClients(null);
-        }
-
-        return clients;
-    }
-
-    /**
-     * Sets the clients list.
-     *
-     * @param clients
-     *        clients list.
-     */
-    public void setClients(
-        List<Client> clients)
-    {
-        this.clients = clients;
-    }
-
-    /**
-     * Gets the clients table selection.
-     *
-     * @return clients table selection.
-     */
-    public Collection<Integer> getClientSelection()
-    {
-        return clientSelection;
-    }
-
-    /**
-     * Sets the clients table selection.
-     *
-     * @param clientSelection
-     *        clients table selection.
-     */
-    public void setClientSelection(
-        Collection<Integer> clientSelection)
-    {
-        this.clientSelection = clientSelection;
-    }
-
-    /**
-     * Handles the client table selection event.
-     *
-     * @param event
-     *        clients table selection event.
-     * @throws EntityNotFoundException
-     *         if client was not found by identifier.
-     */
-    public void handleSelection(
-        AjaxBehaviorEvent event)
-    throws EntityNotFoundException
-    {
-        if (clientSelection.isEmpty())
-        {
-            setSelectedClient(null);
-        }
-        else
-        {
-            for (Object selected : clientSelection)
-            {
-                UIExtendedDataTable table =
-                    (UIExtendedDataTable) event.getComponent();
-
-                table.setRowKey(selected);
-                if (table.isRowAvailable())
-                {
-                    setSelectedClient(crudService.get(
-                        ((Client) table.getRowData()).getId()));
-                }
-            }
-        }
-    }
-
-    /**
-     * Gets the selected client.
-     *
-     * @return selected client.
-     */
-    public Client getSelectedClient()
-    {
-        return selectedClient;
-    }
-
-    /**
-     * Sets the selected client.
-     *
-     * @param selectedClient
-     *        selected client.
-     */
+    @Override
     public void setSelectedClient(
         Client selectedClient)
     {
-        this.selectedClient = selectedClient;
-
-        setSelectedClientAccounts(selectedClient != null
-            ? Lists.newArrayList(
-                selectedClient.getAccounts() != null
-                    ? selectedClient.getAccounts()
-                    : Collections.<Account>emptyList())
-            : null);
+        super.setSelectedClient(selectedClient);
 
         handleSelectedClientChange();
-    }
-
-    /**
-     * Gets the selected client accounts list.
-     *
-     * @return selected client account list.
-     */
-    public List<Account> getSelectedClientAccounts()
-    {
-        return selectedClientAccounts;
-    }
-
-    /**
-     * Sets the selected client accounts list.
-     *
-     * @param selectedClientAccounts
-     *        selected client accounts list.
-     */
-    public void setSelectedClientAccounts(
-        List<Account> selectedClientAccounts)
-    {
-        this.selectedClientAccounts = selectedClientAccounts;
     }
 
     /**
@@ -212,11 +64,11 @@ public class ClientBean
 
         if (selectedClient.getId() != null)
         {
-            crudService.merge(selectedClient);
+            clientCRUDService.merge(selectedClient);
         }
         else
         {
-            crudService.create(selectedClient);
+            clientCRUDService.create(selectedClient);
         }
 
         reloadClients(selectedClient);
@@ -231,43 +83,9 @@ public class ClientBean
     public void deleteClient()
     throws EntityNotFoundException
     {
-        crudService.delete(selectedClient.getId());
+        clientCRUDService.delete(selectedClient.getId());
 
         reloadClients(null);
-    }
-
-    /**
-     * Reloads the clients list.
-     *
-     * @param client
-     *        selected client.
-     * @throws EntityNotFoundException
-     *         if client was not found by identifier.
-     */
-    public void reloadClients(
-        Client client)
-    throws EntityNotFoundException
-    {
-        setClients(crudService.listAll());
-
-        if (client != null && client.getId() != null)
-        {
-            for (int i = 0; i < clients.size(); i++)
-            {
-                Client current = clients.get(i);
-                if (current.getId().equals(client.getId()))
-                {
-                    setClientSelection(Sets.newHashSet(i));
-                    setSelectedClient(crudService.get(client.getId()));
-                    break;
-                }
-            }
-        }
-        else
-        {
-            setClientSelection(null);
-            setSelectedClient(client);
-        }
     }
 
     /**
