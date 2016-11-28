@@ -17,9 +17,9 @@
     </modules>
 
     <properties>
-        <javaee.version>6.0</javaee.version>
+        <inject.version>1</inject.version>
         <validation.version>1.1.0.Final</validation.version>
-        <jsf.version>2.2.14</jsf.version>
+        <jsf.version>2.1.7</jsf.version>
         <richfaces.version>4.0.0.Final</richfaces.version>
         <guava.version>13.0.1</guava.version>
         <spring.version>3.2.8.RELEASE</spring.version>
@@ -30,17 +30,18 @@
         <joda.time.version>2.9.5</joda.time.version>
         <jadira.version>4.0.0.GA</jadira.version>
         <application.version>1.0.0-SNAPSHOT</application.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.2.26</mockito.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Java EE. -->
+            <!-- Java EE Inject. -->
             <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>${javaee.version}</version>
-                <scope>provided</scope>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${inject.version}</version>
             </dependency>
 
             <!-- Validation. -->
@@ -177,6 +178,22 @@
                 <groupId>org.jadira.usertype</groupId>
                 <artifactId>usertype.core</artifactId>
                 <version>${jadira.version}</version>
+            </dependency>
+
+            <!-- JUnit. -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Mockito. -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

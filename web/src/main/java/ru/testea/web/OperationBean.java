@@ -1,5 +1,6 @@
 package ru.testea.web;
 
+import com.google.common.base.Function;
 import org.joda.money.Money;
 import ru.testea.api.BusinessLogicException;
 import ru.testea.api.Client;
@@ -9,6 +10,8 @@ import ru.testea.api.IOperationService;
 import ru.testea.api.Transfer;
 import ru.testea.api.Withdrawal;
 
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,14 +24,17 @@ import java.util.List;
  */
 @ViewScoped
 @Named
+@ManagedBean
 public class OperationBean
-extends BaseClientBean
 {
     @Inject
     private IOperationService operationService;
 
     @Inject
     private IOperationCRUDService operationCRUDService;
+
+    @Inject
+    private ClientBean clientBean;
 
     private List<Deposition> selectedClientDepositions;
 
@@ -53,24 +59,33 @@ extends BaseClientBean
     {
     }
 
-    @Override
-    public void setSelectedClient(
-        Client selectedClient)
+    /**
+     * Initializes this bean.
+     */
+    @PostConstruct
+    public void initialize()
     {
-        super.setSelectedClient(selectedClient);
-
-        setSelectedClientDepositions(selectedClient != null
-            ? operationCRUDService.listByTypeAndClientId(
-                Deposition.class, selectedClient.getId())
-            : null);
-        setSelectedClientWithdrawals(selectedClient != null
-            ? operationCRUDService.listByTypeAndClientId(
-                Withdrawal.class, selectedClient.getId())
-            : null);
-        setSelectedClientTransfers(selectedClient != null
-            ? operationCRUDService.listByTypeAndClientId(
-                Transfer.class, selectedClient.getId())
-            : null);
+        clientBean.setClientSelectionHandler(new Function<Client, Void>()
+        {
+            @Override
+            public Void apply(
+                Client client)
+            {
+                setSelectedClientDepositions(client != null
+                    ? operationCRUDService.listByTypeAndClientId(
+                        Deposition.class, client.getId())
+                    : null);
+                setSelectedClientWithdrawals(client != null
+                    ? operationCRUDService.listByTypeAndClientId(
+                        Withdrawal.class, client.getId())
+                    : null);
+                setSelectedClientTransfers(client != null
+                    ? operationCRUDService.listByTypeAndClientId(
+                        Transfer.class, client.getId())
+                    : null);
+                return null;
+            }
+        });
     }
 
     /**
@@ -266,7 +281,7 @@ extends BaseClientBean
         setOperationTargetAccountId(null);
         setOperationAmount(null);
 
-        reloadClients(selectedClient);
+        clientBean.reloadClients(clientBean.getSelectedClient());
     }
 
     /**

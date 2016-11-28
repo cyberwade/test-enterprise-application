@@ -31,14 +31,23 @@ import javax.inject.Inject;
 public class OperationService
 implements IOperationService
 {
+    /**
+     * CRUD service for accounts.
+     */
     @Inject
-    private IAccountCRUDService accountCRUDService;
+    IAccountCRUDService accountCRUDService;
 
+    /**
+     * CRUD service for operations.
+     */
     @Inject
-    private IOperationCRUDService operationCRUDService;
+    IOperationCRUDService operationCRUDService;
 
+    /**
+     * CRUD service for clients.
+     */
     @Inject
-    private IClientCRUDService clientCRUDService;
+    IClientCRUDService clientCRUDService;
 
     /**
      * Creates new service.

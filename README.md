@@ -9,6 +9,6 @@ To run the test enterprise application you should follow the steps:
 
 4. Build web-module.
 
-5. Deploy the WAR to the JBoss Application Server instance (JBoss AS of 7 version needed).
+5. Deploy the WAR to the JBoss or Tomcat Application Server (both servers of version 7 needed).
 
 6. Open index page, for example by URL *http://localhost:8080/test-enterprise-application/index.xhtml*.

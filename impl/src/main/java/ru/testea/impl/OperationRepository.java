@@ -50,7 +50,7 @@ extends BaseEntityRepository<Operation>
      *        result operation type.
      * @return operations list.
      */
-    public <T extends Operation> List<T> listByType(
+    public <T extends Operation> List<T> listByTypeAndClientId(
         Class<T> type,
         Long clientId)
     {

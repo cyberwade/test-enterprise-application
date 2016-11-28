@@ -106,10 +106,12 @@ implements IBaseEntityCRUDService<E>
     public E update(
         Function<E, Void> updater,
         Long id)
+    throws EntityNotFoundException
     {
+        Preconditions.checkNotNull(updater, "Updater cannot be null.");
         validateId(id);
 
-        E entity = repository.findAndLock(id);
+        E entity = findAndLock(id);
 
         updater.apply(entity);
 
@@ -124,7 +126,7 @@ implements IBaseEntityCRUDService<E>
         validateEntity(entity);
         validateId(entity.getId());
 
-        repository.findAndLock(entity.getId());
+        findAndLock(entity.getId());
         repository.merge(entity);
 
         return entity;
@@ -160,6 +162,21 @@ implements IBaseEntityCRUDService<E>
         Long id)
     {
         Preconditions.checkNotNull(id, "Entity id cannot be null.");
+    }
+
+    private E findAndLock(
+        Long id)
+    throws EntityNotFoundException
+    {
+        return getInternal(id, new Function<Long, E>()
+        {
+            @Override
+            public E apply(
+                Long id)
+            {
+                return repository.findAndLock(id);
+            }
+        });
     }
 
     private E getInternal(

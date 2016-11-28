@@ -2,146 +2,114 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:a4j="http://richfaces.org/a4j">
-    <f:loadBundle basename="ru.testea.web.messages" var="messages"/>
-    <h:head>
-        <title>
+    <ui:composition template="formLayout.xhtml">
+        <ui:define name="title">
             <h:outputText value="#{messages['title.clients']}"/>
-        </title>
-        <h:outputStylesheet name="css/style.css" />
-    </h:head>
-    <h:body onload="#{clientBean.reloadClients(null)}">
-        <ui:include src="menu.xhtml"/>
-        <h:form id="form">
-            <h:panelGrid columns="2" styleClass="basePanel" columnClasses="listPanel,formPanel">
-                <h:panelGroup>
-                    <a4j:outputPanel id="listPanel">
-                        <rich:panel styleClass="listPanel">
-                            <f:facet name="header">
-                                <h:outputText value="#{messages['header.clients']}"/>
-                            </f:facet>
-                            <rich:extendedDataTable value="#{clientBean.clients}" var="client" selectionMode="single"
-                                                    selection="#{clientBean.clientSelection}" styleClass="dataTable">
-                                <a4j:ajax event="selectionchange" render="formPanel, buttonPanel"
-                                          listener="#{clientBean.handleSelection}"/>
-                                <rich:column>
-                                    <h:outputText value="#{client.fullName}"/>
-                                </rich:column>
-                            </rich:extendedDataTable>
-                        </rich:panel>
-                    </a4j:outputPanel>
-                </h:panelGroup>
-                <h:panelGroup>
-                    <a4j:outputPanel id="formPanel">
-                        <rich:panel styleClass="formPanel" rendered="#{not empty clientBean.selectedClient}">
-                            <rich:tabPanel switchType="client" tabHeaderClass="header" styleClass="formPanel">
-                                <rich:tab header="#{messages['header.tab.general']}">
-                                    <h:panelGrid columns="1">
-                                        <h:outputLabel value="#{messages['field.client.fullName']}" for="fullNameField"
-                                                       styleClass="label"/>
-                                        <h:inputText id="fullNameField" value="#{clientBean.selectedClient.fullName}"
-                                                     styleClass="textField">
-                                            <a4j:ajax execute="fullNameField" event="keyup" render="buttonPanel"
-                                                      listener="#{clientBean.handleSelectedClientChange}"/>
-                                        </h:inputText>
-                                        <h:outputLabel value="#{messages['field.client.address']}" for="addressField"
-                                                       styleClass="label"/>
-                                        <h:inputText id="addressField" value="#{clientBean.selectedClient.address}"
-                                                     styleClass="textField">
-                                            <a4j:ajax execute="addressField" event="keyup" render="buttonPanel"
-                                                      listener="#{clientBean.handleSelectedClientChange}"/>
-                                        </h:inputText>
-                                        <h:outputLabel value="#{messages['field.client.birthday']}" for="birthdayField"
-                                                       styleClass="label"/>
-                                        <rich:calendar id="birthdayField" value="#{clientBean.selectedClient.birthday}"
-                                                       datePattern="dd.MM.yyyy" enableManualInput="true"
-                                                       converter="localDateConverter" styleClass="dateField">
-                                            <a4j:ajax execute="birthdayField" event="change" render="buttonPanel"
-                                                      listener="#{clientBean.handleSelectedClientChange}"/>
-                                        </rich:calendar>
-                                    </h:panelGrid>
-                                </rich:tab>
-                                <rich:tab header="#{messages['header.tab.accounts']}">
-                                    <a4j:outputPanel id="accountsPanel">
-                                        <rich:dataTable value="#{clientBean.selectedClientAccounts}" var="account"
-                                                        styleClass="dataTable">
-                                            <h:column>
-                                                <h:outputLabel value="#{messages['field.account.name']}"
-                                                               for="nameTextField" styleClass="label"/>
-                                                <h:inputText id="nameTextField" value="#{account.name}"
-                                                             styleClass="shortTextField">
-                                                    <a4j:ajax execute="nameTextField" event="keyup" render="buttonPanel"
-                                                              listener="#{clientBean.handleSelectedClientChange}"/>
-                                                </h:inputText>
-                                            </h:column>
-                                            <h:column>
-                                                <h:outputLabel value="#{messages['field.account.amount']}"
-                                                               for="amountTextField" styleClass="label"/>
-                                                <h:inputText id="amountTextField" value="#{account.amount}"
-                                                             required="false"
-                                                             styleClass="shortTextField" converter="moneyConverter">
-                                                    <a4j:ajax execute="amountTextField" event="keyup"
-                                                              render="buttonPanel"
-                                                              listener="#{clientBean.handleSelectedClientChange}"/>
-                                                </h:inputText>
-                                            </h:column>
-                                            <h:column>
-                                                <a4j:commandButton value="#{messages['button.close']}" styleClass="button"
-                                                                   action="#{clientBean.deleteAccount(account)}"
-                                                                   render="accountsPanel,buttonPanel"/>
-                                            </h:column>
-                                        </rich:dataTable>
-                                        <a4j:commandButton value="#{messages['button.plus']}" styleClass="button"
-                                                           action="#{clientBean.addAccount}"
-                                                           render="accountsPanel,buttonPanel"/>
-                                    </a4j:outputPanel>
-                                </rich:tab>
-                            </rich:tabPanel>
-                        </rich:panel>
-                    </a4j:outputPanel>
-                </h:panelGroup>
-            </h:panelGrid>
-            <a4j:outputPanel id="buttonPanel">
-                <rich:panel styleClass="buttonPanel">
-                    <a4j:commandButton value="#{messages['button.add']}" styleClass="button"
-                                       action="#{clientBean.addClient}" render="listPanel,formPanel,buttonPanel"/>
-                    <a4j:commandButton value="#{messages['button.save']}" styleClass="button"
-                                       action="#{clientBean.saveClient}" render="listPanel,formPanel,buttonPanel"
-                                       disabled="#{!clientBean.selectedClientValid}"/>
-                    <h:commandButton value="#{messages['button.delete']}" styleClass="button"
-                                     render="listPanel,formPanel,buttonPanel"
-                                     disabled="#{empty clientBean.selectedClient or empty clientBean.selectedClient.id}">
-                        <rich:componentControl target="confirmDeleteDialog" operation="show"/>
-                    </h:commandButton>
-                    <rich:popupPanel id="confirmDeleteDialog" modal="true" resizeable="false"
-                                     onmaskclick="#{rich:component('confirmDeleteDialog')}.hide()"
-                                     styleClass="dialog">
-                        <f:facet name="header">
-                            <h:outputText value="#{messages['header.deleteConfirmation']}"/>
-                        </f:facet>
-                        <f:facet name="controls">
-                            <h:outputLink value="#"
-                                          onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"
-                                          style="color: inherit">
-                                <h:outputText value="#{messages['button.close']}"/>
-                            </h:outputLink>
-                        </f:facet>
-                        <p><h:outputText value="#{messages['text.client.deleteConfirmation']}"/></p>
-                        <rich:panel styleClass="buttonPanel dialogButtonPanel">
-                            <a4j:commandButton value="#{messages['button.ok']}" styleClass="button"
-                                               action="#{clientBean.deleteClient}"
-                                               onclick="#{rich:component('confirmDeleteDialog')}.hide(); return true;"
-                                               render="listPanel,formPanel,buttonPanel"/>
-                            <a4j:commandButton value="#{messages['button.cancel']}" styleClass="button"
-                                               onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"/>
-                        </rich:panel>
-                    </rich:popupPanel>
+        </ui:define>
+
+        <ui:define name="tabPanel">
+            <rich:tab header="#{messages['header.tab.general']}">
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages['field.client.fullName']}" for="fullNameField"
+                                   styleClass="label"/>
+                    <h:inputText id="fullNameField" value="#{clientBean.selectedClient.fullName}"
+                                 styleClass="textField">
+                        <a4j:ajax execute="fullNameField" event="keyup" render="buttonPanel"
+                                  listener="#{clientBean.handleSelectedClientChange}"/>
+                    </h:inputText>
+                    <h:outputLabel value="#{messages['field.client.address']}" for="addressField"
+                                   styleClass="label"/>
+                    <h:inputText id="addressField" value="#{clientBean.selectedClient.address}"
+                                 styleClass="textField">
+                        <a4j:ajax execute="addressField" event="keyup" render="buttonPanel"
+                                  listener="#{clientBean.handleSelectedClientChange}"/>
+                    </h:inputText>
+                    <h:outputLabel value="#{messages['field.client.birthday']}" for="birthdayField"
+                                   styleClass="label"/>
+                    <rich:calendar id="birthdayField" value="#{clientBean.selectedClient.birthday}"
+                                   datePattern="dd.MM.yyyy" enableManualInput="true"
+                                   converter="localDateConverter" styleClass="dateField">
+                        <a4j:ajax execute="birthdayField" event="change" render="buttonPanel"
+                                  listener="#{clientBean.handleSelectedClientChange}"/>
+                    </rich:calendar>
+                </h:panelGrid>
+            </rich:tab>
+            <rich:tab header="#{messages['header.tab.accounts']}">
+                <a4j:outputPanel id="accountsPanel">
+                    <rich:dataTable value="#{clientBean.selectedClientAccounts}" var="account"
+                                    styleClass="dataTable">
+                        <h:column>
+                            <h:outputLabel value="#{messages['field.account.name']}"
+                                           for="nameTextField" styleClass="label"/>
+                            <h:inputText id="nameTextField" value="#{account.name}"
+                                         styleClass="shortTextField">
+                                <a4j:ajax execute="nameTextField" event="keyup" render="buttonPanel"
+                                          listener="#{clientBean.handleSelectedClientChange}"/>
+                            </h:inputText>
+                        </h:column>
+                        <h:column>
+                            <h:outputLabel value="#{messages['field.account.amount']}"
+                                           for="amountTextField" styleClass="label"/>
+                            <h:inputText id="amountTextField" value="#{account.amount}"
+                                         required="false"
+                                         styleClass="shortTextField" converter="moneyConverter">
+                                <a4j:ajax execute="amountTextField" event="keyup"
+                                          render="buttonPanel"
+                                          listener="#{clientBean.handleSelectedClientChange}"/>
+                            </h:inputText>
+                        </h:column>
+                        <h:column>
+                            <a4j:commandButton value="#{messages['button.close']}" styleClass="button"
+                                               action="#{clientBean.deleteAccount(account)}"
+                                               render="accountsPanel,buttonPanel"/>
+                        </h:column>
+                    </rich:dataTable>
+                    <a4j:commandButton value="#{messages['button.plus']}" styleClass="button"
+                                       action="#{clientBean.addAccount}"
+                                       render="accountsPanel,buttonPanel"/>
+                </a4j:outputPanel>
+            </rich:tab>
+        </ui:define>
+
+        <ui:define name="buttonPanel">
+            <a4j:commandButton value="#{messages['button.add']}" styleClass="button"
+                               action="#{clientBean.addClient}" render="listPanel,formPanel,buttonPanel"/>
+            <a4j:commandButton value="#{messages['button.save']}" styleClass="button"
+                               action="#{clientBean.saveClient}" render="listPanel,formPanel,buttonPanel"
+                               disabled="#{!clientBean.selectedClientValid}"/>
+            <h:commandButton value="#{messages['button.delete']}" styleClass="button"
+                             render="listPanel,formPanel,buttonPanel"
+                             disabled="#{empty clientBean.selectedClient or empty clientBean.selectedClient.id}">
+                <rich:componentControl target="confirmDeleteDialog" operation="show"/>
+            </h:commandButton>
+            <rich:popupPanel id="confirmDeleteDialog" modal="true" resizeable="false"
+                             onmaskclick="#{rich:component('confirmDeleteDialog')}.hide()"
+                             styleClass="dialog">
+                <f:facet name="header">
+                    <h:outputText value="#{messages['header.deleteConfirmation']}"/>
+                </f:facet>
+                <f:facet name="controls">
+                    <h:outputLink value="#"
+                                  onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"
+                                  style="color: inherit">
+                        <h:outputText value="#{messages['button.close']}"/>
+                    </h:outputLink>
+                </f:facet>
+                <p><h:outputText value="#{messages['text.client.deleteConfirmation']}"/></p>
+                <rich:panel styleClass="buttonPanel dialogButtonPanel">
+                    <a4j:commandButton value="#{messages['button.ok']}" styleClass="button"
+                                       action="#{clientBean.deleteClient}"
+                                       onclick="#{rich:component('confirmDeleteDialog')}.hide(); return true;"
+                                       render="listPanel,formPanel,buttonPanel"/>
+                    <a4j:commandButton value="#{messages['button.cancel']}" styleClass="button"
+                                       onclick="#{rich:component('confirmDeleteDialog')}.hide(); return false;"/>
                 </rich:panel>
-            </a4j:outputPanel>
-        </h:form>
-    </h:body>
+            </rich:popupPanel>
+        </ui:define>
+    </ui:composition>
 </html>

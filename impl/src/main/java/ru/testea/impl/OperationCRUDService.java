@@ -28,6 +28,6 @@ implements IOperationCRUDService
         Class<T> type,
         Long clientId)
     {
-        return repository.listByType(type, clientId);
+        return repository.listByTypeAndClientId(type, clientId);
     }
 }
