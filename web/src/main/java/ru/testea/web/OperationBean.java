@@ -281,6 +281,8 @@ public class OperationBean
         setOperationTargetAccountId(null);
         setOperationAmount(null);
 
+        handleOperationChange();
+
         clientBean.reloadClients(clientBean.getSelectedClient());
     }
 

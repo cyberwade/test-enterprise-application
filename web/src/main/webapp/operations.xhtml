@@ -12,6 +12,18 @@
             <h:outputText value="#{messages['title.operations']}"/>
         </ui:define>
 
+        <ui:define name="script">
+            <h:outputScript name="js/cleanupPlugin.js" target="body"/>
+            <script type="text/javascript">
+                function cleanupDialog()
+                {
+                    $('#form\\:operationDialog_content').cleanup();
+
+                    return false;
+                }
+            </script>
+        </ui:define>
+
         <ui:define name="tabPanel">
             <rich:tab header="#{messages['header.tab.depositions']}">
                 <rich:dataTable value="#{operationBean.selectedClientDepositions}" var="deposition"
@@ -93,7 +105,7 @@
                 </f:facet>
                 <f:facet name="controls">
                     <h:outputLink value="#"
-                                  onclick="#{rich:component('operationDialog')}.hide(); return false;"
+                                  onclick="#{rich:component('operationDialog')}.hide(); return cleanupDialog();"
                                   style="color: inherit">
                         <h:outputText value="#{messages['button.close']}"/>
                     </h:outputLink>
@@ -123,16 +135,17 @@
                                  required="false" value="#{operationBean.operationAmount}">
                         <a4j:ajax execute="amountField" event="keyup" render="dialogButtonPanel"
                                   listener="#{operationBean.handleOperationChange}"/>
+                        <a4j:ajax execute="amountField" event="change" render="dialogButtonPanel"
+                                  listener="#{operationBean.handleOperationChange}"/>
                     </h:inputText>
                 </h:panelGrid>
                 <rich:panel id="dialogButtonPanel" styleClass="buttonPanel dialogButtonPanel">
                     <a4j:commandButton value="#{messages['button.ok']}" styleClass="button"
                                        onclick="#{rich:component('operationDialog')}.hide(); return true;"
-                                       action="#{operationBean.operate}"
-                                       disabled="#{!operationBean.operationValid}"
+                                       action="#{operationBean.operate}" disabled="#{!operationBean.operationValid}"
                                        render="listPanel,formPanel,operationDialog"/>
                     <a4j:commandButton value="#{messages['button.cancel']}" styleClass="button"
-                                       onclick="#{rich:component('operationDialog')}.hide(); return false;"/>
+                                       onclick="#{rich:component('operationDialog')}.hide(); return cleanupDialog();"/>
                 </rich:panel>
             </rich:popupPanel>
         </ui:define>
